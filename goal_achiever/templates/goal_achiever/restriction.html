@@ -1,0 +1,14 @@
+{% extends 'goal_achiever/base.html' %}
+
+{% block content %}
+
+<h1>{{ restriction }}</h1>
+<h3>Description:</h3>
+<p>{{ restriction.description }}</p>
+---------------------------------------------------
+<h2>Goals affected:</h2>
+{% for goal in restriction_goals %}
+<li><a href="{% url 'goal' goal.pk %}">{{ goal }}</a></li>
+{% endfor %}
+
+{% endblock %}

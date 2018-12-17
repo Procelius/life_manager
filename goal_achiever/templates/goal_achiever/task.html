@@ -1,0 +1,14 @@
+{% extends 'goal_achiever/base.html' %}
+
+{% block content %}
+
+<h1>{{ task }}</h1>
+<h3>Description:</h3>
+<p>{{ task.description }}</p>
+---------------------------------------------------
+<h2>Goals affected:</h2>
+{% for goal in task_goals %}
+<li><a href="{% url 'goal' goal.pk %}">{{ goal }}</a></li>
+{% endfor %}
+
+{% endblock %}

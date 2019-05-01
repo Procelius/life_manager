@@ -1,5 +1,7 @@
-{% extends 'goal_achiever/base.html' %}
+{% extends 'goal_achiever/base.html' %}{% load static %}
 {% block content %}
+<link rel="stylesheet"  href="{% static 'goal_achiever/css/goal_achiever.css' %}">
+
 <h1>Goals:</h1>
 
 {% if goals %}
@@ -9,4 +11,13 @@
 {% else %}
 <p>You have no goals...</p>
 {% endif %}
+<br>
+<p id="new-goal">Create a new goal</p>
+<div id="create-goal-form">
+    <form method="POST" class="goal-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+        <button type="reset" class="cancel btn">Cancel</button>
+    </form>
+</div>
 {% endblock %}

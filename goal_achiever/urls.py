@@ -1,3 +1,7 @@
+'''
+urls for goal_achiever
+'''
+
 from django.conf.urls import url
 
 from . import views
@@ -11,10 +15,8 @@ urlpatterns = [
 
     url(r'^restriction_list/$',
         views.restriction_list,
-        name='restriction_list'
-    ),
+        name='restriction_list'),
     url(r'^restriction_list/(?P<restriction_id>[0-9]+)/$',
         views.restriction,
-        name='restriction'
-    ),
+        name='restriction'),
 ]

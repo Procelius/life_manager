@@ -1,0 +1,16 @@
+.btn.cancel {
+    color: red;
+}
+.btn.save {
+    color: green;
+}
+div#create-goal-form {
+    display: none;
+}
+p#new-goal {
+    text-decoration: underline;
+    color: blue;
+}
+p#new-goal:hover {
+    cursor: pointer;
+}

@@ -3,6 +3,7 @@ goal_achiever views
 '''
 
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, HttpResponseRedirect
 
 from .models import Goal, Restriction, Task
 from .forms import NewGoalForm
@@ -19,19 +20,30 @@ def goal(request, goal_id):
     return render(request, 'goal_achiever/goal.html', context)
 
 
+def goal_delete(request, goal_id):
+    '''
+    docstring
+    '''
+    if request.method == "POST":
+        instance = get_object_or_404(Goal, pk=goal_id)
+        instance.delete()
+    return JsonResponse({})
+
+
 def goal_list(request):
     '''
     docstring
     '''
-    goals = Goal.objects.all()
     if request.method == "POST":
         form = NewGoalForm(request.POST)
         if form.is_valid():
             form.save()
             form = NewGoalForm()
+            return HttpResponseRedirect('./')
     else:
         form = NewGoalForm()
 
+    goals = Goal.objects.all()
     context = {
         'goals': goals,
         'form': form,

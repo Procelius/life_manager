@@ -1,23 +1,67 @@
 {% extends 'goal_achiever/base.html' %}{% load static %}
 {% block content %}
-<link rel="stylesheet"  href="{% static 'goal_achiever/css/goal_achiever.css' %}">
 
 <h1>Goals:</h1>
-
-{% if goals %}
-{% for goal in goals %}
-<li><a href="{% url 'goal' goal.pk %}">{{ goal }}</a></li>
-{% endfor %}
-{% else %}
-<p>You have no goals...</p>
-{% endif %}
-<br>
-<p id="new-goal">Create a new goal</p>
-<div id="create-goal-form">
-    <form method="POST" class="goal-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-        <button type="reset" class="cancel btn">Cancel</button>
-    </form>
+<button class="edit btn">Edit Goal List</button>
+<div class="container-1 container-form">
+    <!-- <form method="POST" class="goal-form" novalidate>{% csrf_token %} -->
+        <div class="container-2 container-fields">
+            <!-- {{ form.as_p }} -->
+            <label for="id_name">Name:</label>
+            <br>
+            <input type="text" name="name", maxlength="50" required id="id_name">
+            <br>
+            <br>
+            <label for="id_name">Description:</label>
+            <br>
+            <input type="text" name="description", maxlength="300" required id="id_description">
+            <br>
+            <br>
+            <button class="add btn">Add</button>
+        </div>
+        <div class="container-2 container-btn">
+            <button class="save btn">Save</button>
+            <button class="cancel btn">Cancel</button>
+        </div>
+    <!-- </form> -->
 </div>
+<div class="container-1 container-items">
+    <div id="new-items">
+        <!-- here appear new (not saved) items -->
+    </div>
+    <div id="existing-items">
+        {% if goals %}
+        {% for goal in goals reversed %}
+        <div class="container-2 item">
+            <a id="goal_link-{{ goal.pk }}" href="{% url 'goal' goal.pk %}">
+                <span id="goal_name-{{ goal.pk }}" class="name">{{ goal }}</span>
+            </a>
+            <span class="delete {{ goal.pk }}">X</button>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>You have no goals...</p>
+        {% endif %}
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        // $('div.item>.delete').on('click', function(e) {
+        //     var goal_id = e.target.classList[1].toString();
+        //     $.ajax({
+        //         type: "POST",
+        //         url: '{% url "goal_del" "00" %}'.replace(/00/, goal_id),
+        //         'data': {
+        //             'content': 'some data',
+        //             'csrfmiddlewaretoken': '{{ csrf_token }}',
+        //         },
+        //         dataType: "json",
+        //         success: function (response) {
+        //             console.log('success', response);
+        //             location.reload();
+        //         }
+        //     });
+        // });
+    });
+</script>
 {% endblock %}

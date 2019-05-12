@@ -3,9 +3,37 @@ $(document).ready(function() {
     var created = [];
     var newGoalId = -1;
 
+    function itemIsValid (name, description) {
+        if (name != '' && description != '') {
+            var existingNames = $('span.name');
+            for (var i = 0; i < existingNames.length; i++) {
+                if (name === existingNames[i].innerText) {
+                    console.log('This name already exists!');
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            console.log('fill the form, motherfucker!')
+            return false;
+        }
+    }
+
+    function addItem (name, description) {
+        if (itemIsValid(name, description)) {
+            created.push({name, description});    
+            $('#new-items').prepend(`
+                <div id="`+ newGoalId +`" class="container-2 item">
+                    <span class="name">`+ name +`</span>
+                    <span id="`+ name +`" class="delete-new">X</button>
+                </div>
+            `);
+            newGoalId--;
+        }
+    }
+
     $('.btn.edit').on('click', function() {
         // show a new item form and delete buttons
-        $('#new-items').show();
         $('div.container-form').css('display', 'block');
         $('.item > .delete').css('display', 'inline-block');
         // TODO: remove next line after finishing multiple submit functionality
@@ -13,24 +41,10 @@ $(document).ready(function() {
     });
 
     $('.btn.add').on('click', function() {
-        // TODO: implement name uniqueness
         var name = $('#id_name').val();
         var description = $('#id_description').val();
+        addItem(name, description);
 
-        if(name != '' && description != '') {
-            created.push({name, description});
-            $('#new-items').prepend(`
-                <div id="`+ newGoalId +`" class="container-2 item">
-                    <span>
-                        <span class="name">`+ name +`</span>
-                    </span>
-                    <span id="`+ name +`" class="delete-new">X</button>
-                </div>
-            `);
-            newGoalId--;
-        } else {
-            console.log('fill the form, motherfucker!')
-        }
         // clear input fields
         $('#id_name').val('');
         $('#id_description').val('');
@@ -76,13 +90,12 @@ $(document).ready(function() {
         $('.name').css('text-decoration', 'none');
 
         // clear unsaved new items
-        // $('#new-items').empty();
-        $('#new-items').hide();
+        $('#new-items').empty();
 
         // clear all temporary data
         sessionStorage.clear();
         deleted = [];
-        // created = [];
+        created = [];
         newGoalId = -1
     });
 

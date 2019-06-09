@@ -4,26 +4,23 @@
 <h1>Goals:</h1>
 <button class="edit btn">Edit Goal List</button>
 <div class="container-1 container-form">
-    <!-- <form method="POST" class="goal-form" novalidate>{% csrf_token %} -->
-        <div class="container-2 container-fields">
-            <!-- {{ form.as_p }} -->
-            <label for="id_name">Name:</label>
-            <br>
-            <input type="text" name="name", maxlength="50" id="id_name">
-            <br>
-            <br>
-            <label for="id_name">Description:</label>
-            <br>
-            <input type="text" name="description", maxlength="300" id="id_description">
-            <br>
-            <br>
-            <button class="add btn">Add</button>
-        </div>
-        <div class="container-2 container-btn">
-            <button class="save btn">Save</button>
-            <button class="cancel btn">Cancel</button>
-        </div>
-    <!-- </form> -->
+    <div class="container-2 container-fields">
+        <label for="id_name">Name:</label>
+        <br>
+        <input type="text" name="name", maxlength="50" id="id_name">
+        <br>
+        <br>
+        <label for="id_name">Description:</label>
+        <br>
+        <input type="text" name="description", maxlength="300" id="id_description">
+        <br>
+        <br>
+        <button class="add btn">Add</button>
+    </div>
+    <div class="container-2 container-btn">
+        <button class="save btn">Save</button>
+        <button class="cancel btn">Cancel</button>
+    </div>
 </div>
 <div class="container-1 container-items">
     <div id="new-items">

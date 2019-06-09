@@ -29,24 +29,36 @@ def goal_delete(request, goal_id):
         instance.delete()
     return JsonResponse({})
 
+def goal_save(request):
+    '''
+    save goal list changes
+    '''
+    # TODO: separate create, delete and del csrf
+    if request.method == "POST":
+        data = request.POST.copy()
+        del data['csrfmiddlewaretoken']
+    return JsonResponse({'response': 'cleaned_data'})
+
+
 
 def goal_list(request):
     '''
     docstring
     '''
-    if request.method == "POST":
-        form = NewGoalForm(request.POST)
-        if form.is_valid():
-            form.save()
-            form = NewGoalForm()
-            return HttpResponseRedirect('./')
-    else:
-        form = NewGoalForm()
+    # if request.method == "POST":
+    #     form = NewGoalForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         form = NewGoalForm()
+    #         return HttpResponseRedirect('./')
+    # else:
+    #     TODO: delete new goal form
+    #     form = NewGoalForm()
 
     goals = Goal.objects.all()
     context = {
         'goals': goals,
-        'form': form,
+        # 'form': form,
     }
     return render(request, 'goal_achiever/goal_list.html', context)
 

@@ -1,13 +1,15 @@
 $(document).ready(function() {
+    var csrftoken = $.cookie('csrftoken');
+    
     var deleted = [];
     var created = [];
     var newGoalId = -1;
 
-    function itemIsValid (name, description) {
-        if (name != '' && description != '') {
+    function itemIsValid (n, d) {
+        if (n != '' && d != '') {
             var existingNames = $('span.name');
             for (var i = 0; i < existingNames.length; i++) {
-                if (name === existingNames[i].innerText) {
+                if (n === existingNames[i].innerText) {
                     console.log('This name already exists!');
                     return false;
                 }
@@ -19,13 +21,13 @@ $(document).ready(function() {
         }
     }
 
-    function addItem (name, description) {
-        if (itemIsValid(name, description)) {
-            created.push({name, description});    
+    function addItem (n, d) {
+        if (itemIsValid(n, d)) {
+            created.push({n, d});    
             $('#new-items').prepend(`
                 <div id="`+ newGoalId +`" class="container-2 item">
-                    <span class="name">`+ name +`</span>
-                    <span id="`+ name +`" class="delete-new">X</button>
+                    <span class="name">`+ n +`</span>
+                    <span id="`+ n +`" class="delete-new">X</button>
                 </div>
             `);
             newGoalId--;
@@ -76,6 +78,26 @@ $(document).ready(function() {
         });
         created = result;
         $('#' + newGoalId).remove();
+    });
+
+    $('.btn.save').on('click', function () {
+        // save goal list changes
+        console.log(created);
+        console.log(deleted);
+            $.ajax({
+                type: "POST",
+                url: 'http://localhost:8000/goal_achiever/goal_list/save/',
+                data: {
+                    'C': created,
+                    'D': deleted,
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log('success', response);
+                    location.reload();
+                }
+            });
     });
 
     $('.btn.cancel').on('click', function() {

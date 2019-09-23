@@ -1,12 +1,44 @@
-{% extends 'goal_achiever/base.html' %}
+{% extends 'goal_achiever/base.html' %}{% load static %}
 {% block content %}
-<h1>Goals:</h1>
 
-{% if goals %}
-{% for goal in goals %}
-<li><a href="{% url 'goal' goal.pk %}">{{ goal }}</a></li>
-{% endfor %}
-{% else %}
-<p>You have no goals...</p>
-{% endif %}
+<h1>Goals:</h1>
+<button class="edit btn">Edit Goal List</button>
+<div class="container-1 container-form">
+    <div class="container-2 container-fields">
+        <label for="id_name">Name:</label>
+        <br>
+        <input type="text" name="name", maxlength="50" id="id_name">
+        <br>
+        <br>
+        <label for="id_name">Description:</label>
+        <br>
+        <input type="text" name="description", maxlength="300" id="id_description">
+        <br>
+        <br>
+        <button class="add btn">Add</button>
+    </div>
+    <div class="container-2 container-btn">
+        <button class="save btn">Save</button>
+        <button class="cancel btn">Cancel</button>
+    </div>
+</div>
+<div class="container-1 container-items">
+    <div id="new-items">
+        <!-- here appear new (not saved) items -->
+    </div>
+    <div id="existing-items">
+        {% if goals %}
+        {% for goal in goals reversed %}
+        <div class="container-2 item">
+            <a id="goal_link-{{ goal.pk }}" href="{% url 'goal' goal.pk %}">
+                <span id="goal_name-{{ goal.pk }}" class="name">{{ goal }}</span>
+            </a>
+            <span class="delete {{ goal.pk }}">X</button>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>You have no goals...</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

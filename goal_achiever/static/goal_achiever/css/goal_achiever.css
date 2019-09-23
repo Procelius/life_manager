@@ -1,0 +1,68 @@
+/* TODO: global css file */
+
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+}
+ul.errorlist {
+    display: none;
+}
+
+/* ------------------------------------------------------------------------- */
+
+.btn {
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+}
+.btn.edit {
+    border: 1px solid skyblue;
+}
+.btn.cancel {
+    color: red;
+}
+.btn.save {
+    color: green;  
+}
+.btn.add {
+    color: blue;  
+}
+.item > .delete {
+    color: red;
+    display: none;
+}
+.item > .delete-new {
+    color: red;
+}
+div.container-1 {
+    border-radius: 7px;
+    width: 500px;
+    padding: 7px;
+    margin: 5px 0;
+}
+div.container-form {
+    display: none;
+    background-color: #2cc12c;
+}
+div.container-items {
+    background-color: #70a3bb;
+}
+div.container-2 {
+    border-radius: 5px;
+    background-color: white;
+    width: auto;
+    padding: 5px;
+    margin: 5px;
+}
+.edit:hover, 
+.item > .delete:hover,
+.item > .delete-new:hover {
+    cursor: pointer;
+}
+.item > a {
+    text-decoration: none;
+}

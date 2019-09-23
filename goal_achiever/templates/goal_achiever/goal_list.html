@@ -41,24 +41,4 @@
         {% endif %}
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        // $('div.item>.delete').on('click', function(e) {
-        //     var goal_id = e.target.classList[1].toString();
-        //     $.ajax({
-        //         type: "POST",
-        //         url: '{% url "goal_del" "00" %}'.replace(/00/, goal_id),
-        //         'data': {
-        //             'content': 'some data',
-        //             'csrfmiddlewaretoken': '{{ csrf_token }}',
-        //         },
-        //         dataType: "json",
-        //         success: function (response) {
-        //             console.log('success', response);
-        //             location.reload();
-        //         }
-        //     });
-        // });
-    });
-</script>
 {% endblock %}

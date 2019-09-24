@@ -1,13 +1,25 @@
 $(document).ready(function () {
   var csrftoken = $.cookie('csrftoken');
 
+  // controls which form is active
+  var control = '';
+  var controlDiv = null;
+
+  // controls if or which item page is active
+  var itemPk = '';
+  var itemType = '';
+  if ($('#item-selected').length) {
+    itemPk = $('#item-selected').attr('pk')
+    itemType = $('#item-selected').attr('item')
+  }
+
   var deleted = [];
   var created = [];
-  var newGoalId = -1;
+  var newItemId = -1;
 
   function itemIsValid(n, d) {
     if (n != '' && d != '') {
-      var existingNames = $('span.name');
+      var existingNames = $(controlDiv).find('span.name');
       for (var i = 0; i < existingNames.length; i++) {
         if (n === existingNames[i].innerText) {
           console.log('This name already exists!');
@@ -24,73 +36,78 @@ $(document).ready(function () {
   function addItem(n, d) {
     if (itemIsValid(n, d)) {
       created.push({ name: n, description: d });
-      $('#new-items').prepend(`
-                <div id="`+ newGoalId + `" class="container-2 item">
+      $(controlDiv).find('.new-items').prepend(`
+                <div id="`+ newItemId + `" class="container-2 item">
                     <span class="name">`+ n + `</span>
                     <span id="`+ n + `" class="delete-new">X</button>
-                </div>
-            `);
-      newGoalId--;
+                </div>`);
+      newItemId--;
     }
   }
 
   $('.btn.edit').on('click', function () {
-    // show a new item form and delete buttons
-    $('div.container-form').css('display', 'block');
-    $('.item > .delete').css('display', 'inline-block');
-    // TODO: remove next line after finishing multiple submit functionality
-    sessionStorage.setItem('n', 'n');
+    // disables edit buttons
+    $('.btn.edit').attr('disabled', true);
+    // controls which form is active
+    controlDiv = this.closest('.form-control');
+    control = $(controlDiv).attr('name');
+    // shows a new item form and delete buttons
+    $(controlDiv).children('.container-form').css('display', 'block');
+    $(controlDiv).find('.delete').css('display', 'inline-block');
   });
 
   $('.btn.add').on('click', function () {
-    var name = $('#id_name').val();
-    var description = $('#id_description').val();
+    var name = $(controlDiv).find('#id_name').val();
+    var description = $(controlDiv).find('#id_description').val();
     addItem(name, description);
-
-    // clear input fields
-    $('#id_name').val('');
-    $('#id_description').val('');
+    // clears input fields
+    $(controlDiv).find('#id_name').val('');
+    $(controlDiv).find('#id_description').val('');
   });
 
   $('.item > .delete').on('click', function (e) {
-    var goalId = e.target.classList[1];
-    if ($.inArray(goalId, deleted) == -1) {
-      // select a goal (TODO: item) to remove
-      $('#goal_name-' + goalId).css('text-decoration', 'line-through');
-      deleted.push(goalId);
+    var itemId = e.target.classList[1];
+    if ($.inArray(itemId, deleted) == -1) {
+      // selects a item to remove
+      $(controlDiv).find('#item_name-' + itemId).css('text-decoration', 'line-through');
+      deleted.push(itemId);
       e.target.textContent = 'R';
     } else {
-      // deselect a goal (TODO: item) to remove
-      $('#goal_name-' + goalId).css('text-decoration', 'none');
+      // deselects a item to remove
+      $(controlDiv).find('#item_name-' + itemId).css('text-decoration', 'none');
       deleted = $.grep(deleted, function (value) {
-        return value != goalId;
+        return value != itemId;
       });
       e.target.textContent = 'X';
     }
   });
 
-  $('#new-items').on('click', '.delete-new', function (e) {
-    // delete not saved item
-    var newGoalId = e.target.parentElement.id;
-    var newGoalName = e.target.id;
+  $('.new-items').on('click', '.delete-new', function (e) {
+    // deletes not saved item
+    var newItemId = e.target.parentElement.id;
+    var newItemName = e.target.id;
     var result = created.filter(obj => {
-      return obj.name !== newGoalName;
+      return obj.name !== newItemName;
     });
     created = result;
-    $('#' + newGoalId).remove();
+    $('#' + newItemId).remove();
   });
 
   $('.btn.save').on('click', function () {
-    // save goal list changes
+    // saves goal list changes
     if (created.length !== 0 || deleted.length !== 0) {
       $.ajax({
         type: "POST",
-        url: 'http://localhost:8000/goal_achiever/goal_list/save/',
+        url: 'http://localhost:8000/goal_achiever/add_delete_items/',
         data: {
+          'csrfmiddlewaretoken': csrftoken,
+          'control': control,
           'Q': created.length,
           'C': created,
           'D': deleted,
-          'csrfmiddlewaretoken': csrftoken,
+          // passes data if item page is active, else '' (empty string)
+          'item': itemType,
+          'item_pk': itemPk,
         },
         dataType: "json",
         success: function (response) {
@@ -102,32 +119,29 @@ $(document).ready(function () {
   });
 
   $('.btn.cancel').on('click', function () {
-    // hide a form and delete buttons
+    // hides a form and delete buttons
     $('div.container-form').css('display', 'none');
     $('.item > .delete').css('display', 'none');
 
-    // restore delete indicators
+    // restores delete indicators
     for (var i = 0; i < $('.delete').length; i++) {
       $('.delete')[i].textContent = 'X';
     }
     $('.name').css('text-decoration', 'none');
 
-    // clear unsaved new items
-    $('#new-items').empty();
+    // clears unsaved new items
+    $('.new-items').empty();
 
-    // clear all temporary data
-    sessionStorage.clear();
+    // resets form control
+    control = null;
+    controlDiv = null;
+
+    // enables edit buttons
+    $('.btn.edit').attr('disabled', false);
+
+    // clears all temporary data
     deleted = [];
     created = [];
-    newGoalId = -1
+    newItemId = -1
   });
-
-  // TODO: remove this if/else after finishing multiple submit functionality
-  if (sessionStorage.length > 0) {
-    $('div.container-form').css('display', 'block');
-    $('.item > .delete').css('display', 'inline-block');
-  } else {
-    $('div.container-form').css('display', 'none');
-    $('.item > .delete').css('display', 'none');
-  }
 });

@@ -15,3 +15,23 @@ class NewGoalForm(forms.ModelForm):
         model = models.Goal
         fields = ('name',
                   'description')
+
+
+class NewTaskForm(forms.ModelForm):
+    '''
+    a form for creating new tasks
+    '''
+    class Meta:
+        model = models.Task
+        fields = ('name',
+                  'description')
+
+
+class NewRestrictionForm(forms.ModelForm):
+    '''
+    a form for creating new restrictions
+    '''
+    class Meta:
+        model = models.Restriction
+        fields = ('name',
+                  'description')

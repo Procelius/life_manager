@@ -1,17 +1,99 @@
 {% extends 'goal_achiever/base.html' %}
 {% block content %}
-<h1>{{ goal }}</h1>
-<p>{{ goal.description }}</p>
+<div id="item-selected" pk="{{ goal.pk }}" item="goal">
+  <h1>{{ goal }}</h1>
+  <p>{{ goal.description }}</p>
+  <br>
+</div>
+---------------------------------------------------
 <br>
 <h2>tasks:</h2>
-{% for task in goal.tasks.all %}
-<li><a href="{% url 'task' task.pk %}">{{ task }}</a></li>
-{% endfor %}
+<div class="form-control" name="tasks">
+  <button class="edit btn">Edit Task List</button>
+  <div class="container-1 container-form">
+      <div class="container-2 container-fields">
+          <label for="id_name">Name:</label>
+          <br>
+          <input type="text" name="name", maxlength="50" id="id_name">
+          <br>
+          <br>
+          <label for="id_description">Description:</label>
+          <br>
+          <input type="text" name="description", maxlength="300" id="id_description">
+          <br>
+          <br>
+          <button class="add btn">Add</button>
+      </div>
+      <div class="container-2 container-btn">
+          <button class="save btn">Save</button>
+          <button class="cancel btn">Cancel</button>
+      </div>
+  </div>
+  <div class="container-1 container-items">
+    <div class="new-items">
+        <!-- here appear new (not saved) items -->
+    </div>
+    <div id="existing-items">
+        {% if goal.tasks %}
+        {% for task in goal.tasks.all reversed %}
+        <div class="container-2 item">
+            <a id="item_link-{{ task.pk }}" href="{% url 'task' task.pk %}">
+                <span id="item_name-{{ task.pk }}" class="name">{{ task }}</span>
+            </a>
+            <span class="delete {{ task.pk }}">X</button>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>This goal have no tasks...</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+<br>
+---------------------------------------------------
 <br>
 <h2>restrictions:</h2>
-{% for restriction in goal.restrictions.all %}
-<li><a href="{% url 'restriction' restriction.pk %}">{{ restriction }}</a></li>
-{% endfor %}
+<div class="form-control" name="restrictions">
+  <button class="edit btn">Edit Restriction List</button>
+  <div class="container-1 container-form">
+      <div class="container-2 container-fields">
+          <label for="id_name">Name:</label>
+          <br>
+          <input type="text" name="name", maxlength="50" id="id_name">
+          <br>
+          <br>
+          <label for="id_description">Description:</label>
+          <br>
+          <input type="text" name="description", maxlength="300" id="id_description">
+          <br>
+          <br>
+          <button class="add btn">Add</button>
+      </div>
+      <div class="container-2 container-btn">
+          <button class="save btn">Save</button>
+          <button class="cancel btn">Cancel</button>
+      </div>
+  </div>
+  <div class="container-1 container-items">
+    <div class="new-items">
+        <!-- here appear new (not saved) items -->
+    </div>
+    <div id="existing-items">
+        {% if goal.restrictions %}
+        {% for restriction in goal.restrictions.all reversed %}
+        <div class="container-2 item">
+            <a id="item_link-{{ restriction.pk }}" href="{% url 'restriction' restriction.pk %}">
+                <span id="item_name-{{ restriction.pk }}" class="name">{{ restriction }}</span>
+            </a>
+            <span class="delete {{ restriction.pk }}">X</button>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>This goal have no restrictions...</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
 <br>
 ---------------------------------------------------
 {% endblock %}

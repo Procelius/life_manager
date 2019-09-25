@@ -9,7 +9,9 @@ from . import views
 urlpatterns = [
     url(r'^goal_list/$', views.goal_list, name='goal_list'),
     url(r'^goal_list/(?P<goal_id>[0-9]+)/$', views.goal, name='goal'),
-    url(r'^goal_list/save/$', views.save_goal_list, name='save_goal_list'),
+    url(r'^add_delete_items/$',
+        views.add_delete_items,
+        name='add_delete_items'),
 
     url(r'^task_list/$', views.task_list, name='task_list'),
     url(r'^task_list/(?P<task_id>[0-9]+)/$', views.task, name='task'),

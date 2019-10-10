@@ -26,10 +26,10 @@ ul.errorlist {
     color: red;
 }
 .btn.save {
-    color: green;  
+    color: green;
 }
 .btn.add {
-    color: blue;  
+    color: blue;
 }
 .item > .delete {
     color: red;
@@ -58,11 +58,19 @@ div.container-2 {
     padding: 5px;
     margin: 5px;
 }
-.edit:hover, 
+.edit:hover,
 .item > .delete:hover,
 .item > .delete-new:hover {
     cursor: pointer;
 }
 .item > a {
     text-decoration: none;
+}
+
+/* ------------------------------------------------------------------------- */
+/* New stuff */
+
+textarea[name='description'] {
+    width: 100%;
+    height: 40px;
 }

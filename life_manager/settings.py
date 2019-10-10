@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'goal_achiever.apps.GoalAchieverConfig',
+    'schedule.apps.ScheduleConfig',
 ]
 
 MIDDLEWARE = [

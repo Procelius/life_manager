@@ -6,7 +6,9 @@
 }
 body {
     padding: 10px;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Indie Flower', cursive;
+    font-size: 22px;
+    letter-spacing: 1px;
 }
 ul.errorlist {
     display: none;
@@ -18,6 +20,7 @@ ul.errorlist {
     background-color: transparent;
     border: none;
     padding: 5px;
+    font-family: 'Quicksand', sans-serif;
 }
 .btn.edit {
     border: 1px solid skyblue;

@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^goal_achiever/', include('goal_achiever.urls')),
+    url(r'^schedule/', include('schedule.urls')),
     url(r'^admin/', admin.site.urls),
 ]
